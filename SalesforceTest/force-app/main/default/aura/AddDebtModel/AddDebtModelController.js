@@ -30,8 +30,9 @@
             });
             toastEvent.fire();
         }else {
+            debtObject.minPaymentPercentage = debtObject.minPaymentPercentage/100;
             var compEvent = component.getEvent("modelEvent");
-            compEvent.setParams({ "newData" : component.get("v.debtObject") });
+            compEvent.setParams({ "newData" : debtObject });
             compEvent.fire();
         }
     }
