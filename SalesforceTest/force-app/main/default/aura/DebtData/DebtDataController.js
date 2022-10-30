@@ -1,10 +1,12 @@
 ({ 
+    // This method is being used to initialise table with headers and data
     init: function (component, event, helper) {
         component.set('v.isLoading', true);
         component.set('v.columns', helper.getColumnDefinitions());
         helper.getData(component);
     },  
     
+    // This method is being used to get the selected rows on table
     updateSelectedText: function (component, event) {
         var selectedRows = event.getParam('selectedRows');
         component.set('v.selectedRows', selectedRows);
@@ -16,11 +18,9 @@
         }
     },
     
+    // This method is being used to sort the table as per the column selected
     updateColumnSorting: function (component, event, helper) {
         component.set('v.isLoading', true);
-        // We use the setTimeout method here to simulate the async
-        // process of the sorting data, so that user will see the
-        // spinner loading when the data is being sorted.
         setTimeout($A.getCallback(function() {
             var fieldName = event.getParam('fieldName');
             var sortDirection = event.getParam('sortDirection');
@@ -31,6 +31,7 @@
         }), 0);
     },
     
+    // This method is being used to remove the selected row from the table
     removeDebt : function(component, event, helper) {
         var selectedRows = component.get('v.selectedRows');
         var totalRecords = component.get("v.data");
@@ -42,10 +43,12 @@
         helper.getTotalAmount(component,totalRecords);
     },
     
+    // This method is being used to open the modal box
     addDebt : function(component, event, helper) {
         component.set("v.showModal", true);
     },
     
+    // This method is being used to handle the newData event and update the table
     handleModelEvent : function(component, event, helper) {
         var newData = event.getParam("newData");
         if(newData != undefined) {
@@ -55,7 +58,6 @@
             helper.getTotalAmount(component,data);
         }
         component.set("v.showModal", false);
-        
     }
     
 })

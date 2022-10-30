@@ -7,9 +7,9 @@
 public class DebtDataController {
 	
 	//Initializing variables for making web callout    
-    public final static String endPoint = 'https://raw.githubusercontent.com/StrategicFS/Recruitment/master/data.json';
-    public final static String methodType = 'GET';
-    public final static String contentType = 'application/json;charset=UTF-8';
+    public final static String END_POINT = 'https://raw.githubusercontent.com/StrategicFS/Recruitment/master/data.json';
+    public final static String METHOD_TYPE = 'GET';
+    public final static String CONTENT_TYPE = 'application/json;charset=UTF-8';
     
     /*		
     * @methodName  : getData
@@ -24,10 +24,10 @@ public class DebtDataController {
             //Making Callout
             Http http = new Http();
             HttpRequest request = new HttpRequest();
-            request.setEndpoint(endPoint);
-            request.setMethod(methodType);
-            request.setHeader('Content-Type', contentType);
-            
+            request.setEndpoint(END_POINT);
+            request.setMethod(METHOD_TYPE);
+            request.setHeader('Content-Type', CONTENT_TYPE);
+            request.setTimeout(120000);
             //Receving response from the callout
             HttpResponse response = http.send(request);
             String responseBody = response.getBody();
@@ -42,7 +42,7 @@ public class DebtDataController {
             }
             return listDebtDataWrapper;
         }catch(Exception ex) {
-            return null;
+            throw new AuraHandledException(ex.getMessage());    
         }
         
     }

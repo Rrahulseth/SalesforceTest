@@ -1,4 +1,5 @@
 ({
+    // This method is being used to initialise the record
     init: function(component, event, helper) {
         let obj = {
             "id": component.get('v.dataLength'),
@@ -11,11 +12,13 @@
         component.set("v.debtObject",obj);
     },
     
+    // This method is being used to close the model box for Adding debt
     closeModel: function(component, event, helper) {
         var compEvent = component.getEvent("modelEvent");
         compEvent.fire();
     },
     
+    // This method is being used for accepting data from fields on the screen and send to parent component using event
     submitDetails: function(component, event, helper) {
         var debtObject = component.get("v.debtObject");
         if(debtObject.creditorName == "" && debtObject.firstName == "" && debtObject.lastName == "" && debtObject.minPaymentPercentage == 0.00 && debtObject.balance == 0.00) {
