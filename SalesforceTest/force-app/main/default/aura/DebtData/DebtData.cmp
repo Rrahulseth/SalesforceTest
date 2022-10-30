@@ -1,0 +1,80 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes" controller="DebtDataController" access="global" >
+    <!-- attributes -->
+    <aura:attribute name="columns" type="List" default="[]"/>
+    <aura:attribute name="data" type="List" default="[]"/>
+    <aura:attribute name="keyField" type="String" default="id"/>
+    <aura:attribute name="selectedRows" type="List" default="[]"/>
+    <aura:attribute name="selectedRowsCount" type="Integer" default="0"/>
+    <aura:attribute name="isLoading" type="Boolean" default="false"/>
+    <aura:attribute name="resizeColumnDisabled" type="Boolean" default="false"/>
+    <aura:attribute name="sortedBy" type="String"/>
+    <aura:attribute name="sortedDirection" type="String"/>
+    <aura:attribute name="showModal" type="Boolean" default="false"/>
+    <aura:attribute name="disableRemove" type="Boolean" default="true"/>
+    <aura:attribute name="totalAmount" type="Currency" default="0"/>
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    <aura:handler name="modelEvent" event="c:modelEvent" action="{!c.handleModelEvent}"/>
+    
+    
+    <div class="slds-is-relative">
+        <lightning:card>
+            <div class="slds-p-around_medium">
+                <div class="slds-scrollable_y">
+                    <lightning:datatable
+                                         columns="{! v.columns }"
+                                         data="{! v.data }"
+                                         keyField="{! v.keyField }"
+                                         resizeColumnDisabled="{! v.resizeColumnDisabled }"
+                                         sortedBy="{! v.sortedBy }"
+                                         sortedDirection="{! v.sortedDirection }"
+                                         onrowselection="{! c.updateSelectedText }"
+                                         onrowaction="{! c.handleRowAction }"
+                                         onsort="{! c.updateColumnSorting }" 
+                                         class="slds-table_bordered slds-table_col-bordered"
+                                         />
+                </div>
+                <div class="slds-p-vertical_medium">
+                    <lightning:button label="Add Debt" onclick="{! c.addDebt }"/>
+                    <span class="slds-p-horizontal_medium">
+                        <lightning:button label="Remove Debt" disabled="{!v.disableRemove}" onclick="{! c.removeDebt }"/>
+                    </span>
+                </div>
+                <div>
+                    <div class="custom-background">
+                        <div class="slds-grid slds-wrap slds-p-around_x-small">
+                            <div class="slds-size_1-of-2">
+                                <b>Total</b>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>
+                                    <lightning:formattedNumber class=" slds-float_right" value="{!v.totalAmount}" style="currency" currencyDisplayAs="symbol"/>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br></br>
+                <div>
+                    <span class="slds-p-horizontal_medium">
+                        <b>Total Row Count : {!v.data.length}</b>
+                    </span>
+                    <span class="slds-p-horizontal_medium">
+                        <b>Check Row Count : {!v.selectedRowsCount}</b>
+                    </span>
+                </div>
+                <aura:if isTrue="{! v.showModal }">
+                    <c:AddDebtModel dataLength="{!v.data.length +1}"/>
+                </aura:if>
+                
+                <aura:if isTrue="{! v.isLoading }">
+                    <lightning:spinner alternativeText="Loading"/>
+                </aura:if>
+            </div>
+        </lightning:card>
+    </div>
+    
+    
+    
+</aura:component>
