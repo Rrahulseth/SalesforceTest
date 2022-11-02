@@ -17,7 +17,7 @@ public class DebtDataController {
     * @param 	   : void
     * @return 	   : List<DebtDataWrapper>
     */
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<DebtDataWrapper> getData () {
         List<DebtDataWrapper> listDebtDataWrapper = new List<DebtDataWrapper>();
         try {

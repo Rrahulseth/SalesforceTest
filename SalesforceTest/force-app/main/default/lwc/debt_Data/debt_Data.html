@@ -1,0 +1,135 @@
+<template>
+    <div class="slds-is-relative">
+        <lightning-card>
+            <div class="slds-p-around_medium">
+                <!-- Table For Debt Data -->
+                <div class="slds-scrollable_y">
+                    <lightning-datatable
+                        key-field="id"
+                        data={data}
+                        columns={columns} 
+                        onrowselection={handleRowAction} 
+                        sorted-by={sortedBy} 
+                        sorted-direction={sortedDirection}
+                        onsort={updateColumnSorting}>
+                    </lightning-datatable>
+                </div>
+                <!-- Buttons For Adding And Removing Debt Data -->
+                <div class="slds-p-vertical_medium">
+                    <lightning-button label="Add Debt" onclick={addDebt}>
+                    </lightning-button>
+                    <span class="slds-p-horizontal_medium">
+                        <lightning-button label="Remove Debt" disabled={disableRemove} onclick={removeDebt}>
+                        </lightning-button>
+                    </span>
+                </div>
+                <!-- Showing Total Amount -->
+                <div>
+                    <div class="custom-background">
+                        <div class="slds-grid slds-wrap slds-p-around_x-small">
+                            <div class="slds-size_1-of-2">
+                                <b>Total</b>
+                            </div>
+                            <div class="slds-size_1-of-2">
+                                <b>
+                                    <lightning-formatted-number class=" slds-float_right" value={totalAmount} format-style="currency" currency-display-as="symbol">
+                                    </lightning-formatted-number>
+                                </b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-p-top_large">
+                    <span class="slds-p-horizontal_medium">
+                        <b>Total Row Count : {data.length}</b>
+                    </span>
+                    <span class="slds-p-horizontal_medium">
+                        <b>Check Row Count : {selectedRowsCount}</b>
+                    </span>
+                </div>
+                <!-- Modal Box for Adding Single Debt Record -->
+                <template if:true={showModal} >
+                    <div class="slds-m-around_xx-large">
+                        <!-- Modal/Popup Box starts here-->
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <!-- Modal/Popup Box Header Starts here-->
+                                <header class="slds-modal__header">
+                                    <lightning-button-icon icon-name="utility:close"
+                                                          onclick={closeModel}
+                                                          alternative-text="close"
+                                                          variant="bare-inverse"
+                                                          class="slds-modal__close">
+                                    </lightning-button-icon>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add Debt</h2>
+                                </header>
+                                <!--Modal/Popup Box Body Starts here-->
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered" aria-labelledby="element-with-table-label other-element-with-table-label">
+                                        <thead>
+                                            <tr class="slds-line-height_reset">
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Creditor">Creditor</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="First Name">First Name</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Last Name">Last Name</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Min Pay%">Min Pay%</div>
+                                                </th>
+                                                <th class="" scope="col">
+                                                    <div class="slds-truncate" title="Balance">Balance</div>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="slds-hint-parent">
+                                                <td>
+                                                    <lightning-input name="creditorName" placeholder="Creditor Name" onchange={handleDataChange} variant="label-hidden">
+                                                    </lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input name="firstName" placeholder="First Name" onchange={handleDataChange} variant="label-hidden">
+                                                    </lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input name="lastName" placeholder="Last Name" onchange={handleDataChange} variant="label-hidden">
+                                                    </lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input name="minPaymentPercentage" type="number" placeholder="Min Pay" variant="label-hidden" onchange={handleDataChange} formatter="percent-fixed" step="0.01" >
+                                                    </lightning-input>
+                                                </td>
+                                                <td>
+                                                    <lightning-input name="balance" type="number" placeholder="Balance" variant="label-hidden" onchange={handleDataChange} formatter="currency" step="0.01" >
+                                                    </lightning-input>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!--Modal/Popup Box Footer Starts here-->
+                                <footer class="slds-modal__footer">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModel}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Add" title="Add" onclick={submitDetails}>
+                                    </lightning-button>
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </div>
+                </template>
+                <!-- Spinner to Show Loading -->
+                <template if:true={isLoading} >
+                    <lightning-spinner alternative-text="Loading">
+                    </lightning-spinner>
+                </template> 
+            </div>
+        </lightning-card>
+    </div>
+    
+</template>
